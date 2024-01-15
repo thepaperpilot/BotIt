@@ -2,32 +2,18 @@ reddit:
   baseUrl: https://old.reddit.com
 
 lemmy:
-  baseUrl: https://lemmy.world
+  baseUrl: https://lemmy.dbzer0.com
 
 communityMap:
-  - subreddit: mma
+  - subreddit: incremental_games
     postFilter:
       postLimit: 50
-      minUpvotes: 200
-      maxDownvotes: 100
-      minUpvoteRatio: 0.70
-      maxTimeHours: 10
-    community: mma@kbin.social
-
-  - subreddit: worldnews
-    postFilter:
-      postLimit: 75
-      minUpvotes: 800
-      maxDownvotes: 300
+      minUpvotes: 10
+      maxDownvotes: 1000
       minUpvoteRatio: 0.75
-      maxTimeHours: 6
-    community: world@lemmy.world
-    
-  - subreddit: worldnews
-    postFilter:
-      postLimit: 75
-      minUpvotes: 800
-      maxDownvotes: 300
-      minUpvoteRatio: 0.75
-      maxTimeHours: 5
-    community: worldnews@lemmy.ml
+      maxTimeHours: 48
+      excludedUrlPatterns:
+        - v\.redd.it\/\w+
+    community:
+      name: incremental_games@incremental.social
+      quietFor: 1
