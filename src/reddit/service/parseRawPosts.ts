@@ -6,7 +6,7 @@ export function parseRawPosts(rawPosts: RawPost[]): Post[] {
     const post: Post = {
       id: rawPost.data.id,
       title: rawPost.data.title,
-      url: rawPost.data.url_overridden_by_dest,
+      url: rawPost.data.url_overridden_by_dest ?? rawPost.data.url,
     };
 
     if (rawPost.data.selftext.length) {

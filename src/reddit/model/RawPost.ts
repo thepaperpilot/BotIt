@@ -15,6 +15,7 @@ export interface RawPost {
     pinned: boolean;
     removal_reason: string | null;
     author: string;
+    url: string;
     //For now
     media_embed: any;
     created_utc: number;

@@ -40,7 +40,7 @@ export function filterRawPosts(
   }
 
   const filteredPosts = rawPosts.filter((rawPost) => {
-    if (rawPost.data.stickied || rawPost.data.removal_reason) {
+    if (rawPost.data.removal_reason) {
       stickiedOrRemoved++;
       return false;
     }
@@ -65,11 +65,6 @@ export function filterRawPosts(
       return false;
     }
 
-    if (!rawPost.data.url_overridden_by_dest) {
-      noLink++;
-      return false;
-    }
-
     if (
       regexPatterns.some((regex) => {
         return regex.test(rawPost.data.url_overridden_by_dest);
@@ -78,7 +73,6 @@ export function filterRawPosts(
       excluded++;
       return false;
     }
-
     return true;
   });
 
@@ -95,12 +89,24 @@ export function filterRawPosts(
         LogDomain.Reddit
       );
     });
+    if (stickiedOrRemoved > 0 || excluded > 0 || tooOld > 0 || notEnoughUpvotes > 0 || tooManyDownVotes > 0 || badUpvoteRatio > 0) {
+      logger(
+        LogContext.Info,
+        `Additional posts were found non-viable. Here is the breakdown:
+* ${stickiedOrRemoved} were removed
+* ${excluded} were exluded by regex
+* ${tooOld} were too old (max hours: ${maxTimeHours})
+* ${notEnoughUpvotes} didn't have enough upvotes (min: ${minUpvotes})
+* ${tooManyDownVotes} had too many downvotes (max: ${maxDownvotes})
+* ${badUpvoteRatio} had bad upvote ratios (min ratio: ${minUpvoteRatio})`,
+        LogDomain.Reddit
+      );
+    }
   } else {
     logger(
       LogContext.Info,
       `No valid posts found in the subreddit ${rawPosts[0].data.subreddit}. Here is the breakdown:
-* ${stickiedOrRemoved} were stickied or removed
-* ${noLink} had no link
+* ${stickiedOrRemoved} were removed
 * ${excluded} were exluded by regex
 * ${tooOld} were too old (max hours: ${maxTimeHours})
 * ${notEnoughUpvotes} didn't have enough upvotes (min: ${minUpvotes})
