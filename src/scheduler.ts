@@ -68,7 +68,7 @@ async function runScheduler(): Promise<void> {
           'Running scheduled fetch...',
           LogDomain.Scheduler
         );
-        start(lemmyClient, config, jwt, cacheRepository, postRepository);
+        start(lemmyClient, config, cacheRepository, postRepository);
       },
       start: false,
     });
@@ -82,7 +82,7 @@ async function runScheduler(): Promise<void> {
       'Cron expression not provided. Running fetch once...',
       LogDomain.Scheduler
     );
-    start(lemmyClient, config, jwt, cacheRepository, postRepository);
+    start(lemmyClient, config, cacheRepository, postRepository);
   }
 }
 

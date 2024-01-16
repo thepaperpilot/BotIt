@@ -1,7 +1,6 @@
 import { LemmyHttp } from 'lemmy-js-client';
 
 import {
-  getJwt,
   createPost,
   getCommunityId,
   getCommunityPosts,
@@ -15,7 +14,6 @@ import { LogContext, LogDomain, logger } from '../../logger';
 
 export async function crosspostToCommunity(
   lemmyClient: LemmyHttp,
-  jwt: string,
   crosspostData: CrosspostData,
   config: Config,
   postRepository: PostRepository
@@ -23,12 +21,10 @@ export async function crosspostToCommunity(
   const { subreddit, communityName, posts } = crosspostData;
   const communityId = await getCommunityId(
     lemmyClient,
-    await getJwt(lemmyClient, jwt),
     communityName
   );
   const communityPosts = await getCommunityPosts(
     lemmyClient,
-    await getJwt(lemmyClient, jwt),
     communityId,
     config.lemmy.postLimit
   );
@@ -89,7 +85,6 @@ export async function crosspostToCommunity(
 
   const postUrl = await createPost(
     lemmyClient,
-    await getJwt(lemmyClient, jwt),
     communityId,
     postWithPreview
   );

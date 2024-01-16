@@ -5,35 +5,35 @@ import { LogContext, LogDomain, logger } from '../../logger';
 
 export async function getJwt(
   client: LemmyHttp,
-  currentJwt?: string
 ): Promise<string> {
-  if (!currentJwt || isJwtOutdated(currentJwt)) {
-    try {
-      const username = process.env.LEMMY_USER;
-      const password = process.env.LEMMY_PASS;
+  try {
+    const username = process.env.LEMMY_USER;
+    const password = process.env.LEMMY_PASS;
 
-      if (!username || !password) {
-        throw new Error('Invalid username or password');
-      }
-
-      const loginResponse = await client.login({
-        username_or_email: username,
-        password,
-      });
-      if (!loginResponse.jwt) {
-        throw new Error('Lemmy login failed');
-      }
-      return loginResponse.jwt;
-    } catch (error) {
-      logger(
-        LogContext.Error,
-        'Error while trying to login, host might be down',
-        LogDomain.Lemmy
-      );
-      throw new Error(`${error}`);
+    if (!username || !password) {
+      throw new Error('Invalid username or password');
     }
+
+    const loginResponse = await client.login({
+      username_or_email: username,
+      password,
+    });
+    if (!loginResponse.jwt) {
+      throw new Error('Lemmy login failed');
+    }
+    client.setHeaders({
+      Authorization: `Bearer ${loginResponse.jwt}`
+    });
+    await client.validateAuth();
+    return loginResponse.jwt;
+  } catch (error) {
+    logger(
+      LogContext.Error,
+      'Error while trying to login, host might be down',
+      LogDomain.Lemmy
+    );
+    throw new Error(`${error}`);
   }
-  return currentJwt;
 }
 
 function isJwtOutdated(jwtToken: string): boolean {

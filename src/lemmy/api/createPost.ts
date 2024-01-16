@@ -5,7 +5,6 @@ import { logger, LogContext, LogDomain } from '../../logger';
 
 export async function createPost(
   client: LemmyHttp,
-  jwt: string,
   communityId: number,
   { title, content, url }: Post
 ): Promise<string | void> {
@@ -16,7 +15,6 @@ export async function createPost(
     }
     const postForm: CreatePost = {
       community_id: communityId,
-      auth: jwt,
       name: title,
       body: content,
       url: url,

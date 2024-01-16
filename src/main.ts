@@ -1,14 +1,13 @@
 import { LemmyHttp } from 'lemmy-js-client';
 import { CacheRepository, PostRepository, getSubredditPosts } from './reddit';
 import { logger, LogContext, LogDomain } from './logger';
-import { crosspostToCommunity, getJwt, isCommunityQuiet } from './lemmy';
+import { crosspostToCommunity, isCommunityQuiet } from './lemmy';
 import { CommunityMapEntry, Config } from './model/Config';
 import { CrosspostData } from './model/CrosspostData';
 
 export async function start(
   lemmyClient: LemmyHttp,
   config: Config,
-  jwt: string,
   cacheRepository: CacheRepository,
   postRepository: PostRepository
 ) {
@@ -21,7 +20,6 @@ export async function start(
       if (communityEntry.community.postIfQuietFor) {
         isQuiet = await isCommunityQuiet(
           lemmyClient,
-          await getJwt(lemmyClient, jwt),
           communityEntry.community.name,
           communityEntry.community.postIfQuietFor
         );
@@ -47,7 +45,6 @@ export async function start(
     for (const crosspostData of crosspostDataList) {
       await crosspostToCommunity(
         lemmyClient,
-        jwt,
         crosspostData,
         config,
         postRepository
