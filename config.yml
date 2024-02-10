@@ -16,4 +16,4 @@ communityMap:
         - v\.redd.it\/\w+
     community:
       name: incremental_games@incremental.social
-      quietFor: 24
+      postIfQuietFor: 24
