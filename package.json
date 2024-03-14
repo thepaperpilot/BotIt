@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/scheduler.js",
     "dev": "ts-node src/scheduler.ts",
+    "weekly": "ts-node src/weekly.ts",
     "build": "tsc && npm run prepare-db",
     "prepare-db:dev": "ts-node src/initializeDB.ts",
     "prepare-db": "node dist/initializeDB.js"

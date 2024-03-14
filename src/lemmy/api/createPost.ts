@@ -17,7 +17,7 @@ export async function createPost(
       community_id: communityId,
       name: title,
       body: content,
-      url: url,
+      url: url === "" ? undefined : url,
     };
     const postResponse = await client.createPost(postForm);
     if (!postResponse.post_view.post.ap_id) {

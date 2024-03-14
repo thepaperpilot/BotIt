@@ -14,6 +14,8 @@ communityMap:
       maxTimeHours: 48
       excludedUrlPatterns:
         - v\.redd.it\/\w+
+        - reddit\.com\/.*\/what_games_are_you_playing
+        - reddit\.com\/.*\/help_finding_games_and
     community:
       name: incremental_games@incremental.social
       postIfQuietFor: 24
